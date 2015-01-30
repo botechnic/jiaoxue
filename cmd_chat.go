@@ -4,19 +4,19 @@ import (
 	"log"
 )
 
-type LiveChat struct {
+type CmdChat struct {
 }
 
-func NewLiveChat() *LiveChat {
-	log.Println("newLiveChat")
+func NewCmdChat() *CmdChat {
+	log.Println("newCmdChat")
 
-	live_chat := new(LiveChat)
+	live_chat := new(CmdChat)
 
 	return live_chat
 }
 
-func (this *LiveChat) StartLive(user *User) bool {
-	log.Println("LiveChat StartLive")
+func (this *CmdChat) Start(user *User) bool {
+	log.Println("CmdChat StartLive")
 
 	user.client_socket.On("chat message", func(msg string) {
 		this.on_chat_message(user, msg)
@@ -25,13 +25,13 @@ func (this *LiveChat) StartLive(user *User) bool {
 	return true
 }
 
-func (this *LiveChat) StopLive(user *User) bool {
-	log.Println("LiveChat StopLive")
+func (this *CmdChat) Stop(user *User) bool {
+	log.Println("CmdChat StopLive")
 
 	return true
 }
 
-func (this *LiveChat) on_chat_message(user *User, msg string) {
+func (this *CmdChat) on_chat_message(user *User, msg string) {
 	log.Println("on_chat_message", user.client_socket.Id(), msg)
 
 	user.client_socket.Emit("chat message", msg)
