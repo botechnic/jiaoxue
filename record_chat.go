@@ -21,15 +21,15 @@ func (this *RecordChat) init() {
 	this.isRecording = false
 }
 
-func (this *RecordChat) StartRecord(user *User) bool {
-	log.Println("RecordChat StartRecord")
+func (this *RecordChat) Start(user *User) bool {
+	log.Println("RecordChat Start")
 
 	this.isRecording = true
 	return true
 }
 
-func (this *RecordChat) StopRecord(user *User) bool {
-	log.Println("RecordChat StopRecord")
+func (this *RecordChat) Stop(user *User) bool {
+	log.Println("RecordChat Stop")
 
 	this.isRecording = false
 	return true

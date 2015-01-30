@@ -24,7 +24,7 @@ func (this *RecordMedia) init() {
 	this.RecordHandler = nil
 }
 
-func (this *RecordMedia) StartRecord(user *User) bool {
+func (this *RecordMedia) Start(user *User) bool {
 	log.Println("RecordMedia StartRecord")
 
 	this.isRecording = true
@@ -32,7 +32,7 @@ func (this *RecordMedia) StartRecord(user *User) bool {
 	return true
 }
 
-func (this *RecordMedia) StopRecord(user *User) bool {
+func (this *RecordMedia) Stop(user *User) bool {
 	log.Println("RecordMedia StopRecord")
 
 	this.isRecording = false

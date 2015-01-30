@@ -5,6 +5,8 @@ import (
 )
 
 func main() {
+	jiaoxue.GetContext()
+
 	live_server := jiaoxue.NewLiveServer()
-	live_server.StartLiveServer()
+	live_server.Start()
 }

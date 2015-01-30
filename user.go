@@ -24,25 +24,33 @@ func NewUser(client_socket socketio.Socket) *User {
 	return user
 }
 
-func (this *User) StartRecord() bool {
+func (this *User) StartRecord() {
+	log.Println("User StartRecord")
 
-	return true
+	GetContext().record_manager.Start(this)
 }
 
-func (this *User) StopRecord() bool {
+func (this *User) StopRecord() {
+	log.Println("User StopRecord")
 
-	return true
+	GetContext().record_manager.Stop(this)
 }
 
 func (this *User) StartLive() {
-	GetContext().live_manager.StartLive(this)
+	log.Println("User StartLive")
+
+	GetContext().cmd_manager.Start(this)
 }
 
 func (this *User) StopLive() {
-	GetContext().live_manager.StopLive(this)
+	log.Println("User StopLive")
+
+	GetContext().cmd_manager.Stop(this)
 }
 
 func (this *User) Login(login_msg string) {
+	log.Println("User Login", login_msg)
+
 	user_id := "4"
 	user_name := "s1"
 	user_role := "student"
@@ -58,11 +66,15 @@ func (this *User) Login(login_msg string) {
 }
 
 func (this *User) Logout(logout_msg string) {
+	log.Println("User Logout", logout_msg)
+
 	this.client_socket.Leave(this.courseId)
 }
 
 func (this *User) Disconnect() {
+	log.Println("User Disconnect")
+
 	this.StopLive()
 	this.StartRecord()
-	GetContext().users.RemoveUser(this.client_socket.Id())
+	GetContext().user_manager.RemoveUser(this.client_socket.Id())
 }

@@ -21,14 +21,14 @@ func (this *RecordPPT) init() {
 	this.isRecording = false
 }
 
-func (this *RecordPPT) StartRecord(user *User) bool {
+func (this *RecordPPT) Start(user *User) bool {
 	log.Println("RecordPPT StartRecord")
 
 	this.isRecording = true
 	return true
 }
 
-func (this *RecordPPT) StopRecord(user *User) bool {
+func (this *RecordPPT) Stop(user *User) bool {
 	log.Println("RecordPPT StopRecord")
 
 	this.isRecording = false
