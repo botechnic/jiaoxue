@@ -37,11 +37,11 @@ func (this *CmdRecord) Stop(user *User) bool {
 func (this *CmdRecord) on_start_record(user *User, start_record_msg string) {
 	log.Println("CmdRecord on_start_record", start_record_msg)
 
-	user.StartRecord()
+	//user.StartRecord()
 }
 
 func (this *CmdRecord) on_stop_record(user *User, stop_record_msg string) {
 	log.Println("CmdRecord on_stop_record", stop_record_msg)
 
-	user.StopRecord()
+	//user.StopRecord()
 }

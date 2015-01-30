@@ -26,3 +26,12 @@ func (this *RelayPPT) Stop(user *User) bool {
 
 	return true
 }
+
+func (this *RelayPPT) Relay(user *User, cmd_type string, msg string) bool {
+	log.Println("RelayPPT", cmd_type)
+
+	user.client_socket.Emit(cmd_type, msg)
+	user.client_socket.BroadcastTo(user.courseId, cmd_type, msg)
+
+	return true
+}

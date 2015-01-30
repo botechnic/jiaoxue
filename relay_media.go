@@ -26,3 +26,7 @@ func (this *RelayMedia) Stop(user *User) bool {
 
 	return true
 }
+
+func (this *RelayMedia) Relay(user *User, cmd_type string, msg string) bool {
+	return true
+}

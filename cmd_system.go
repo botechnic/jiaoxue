@@ -1,9 +1,19 @@
 package jiaoxue
 
 import (
-	"github.com/googollee/go-socket.io"
 	"log"
 )
+
+type LoginMsg struct {
+	UserName string `json:"username"`
+	Role     string `json:"role"`
+	CourseId string `json:"course_id"`
+}
+
+type UserCountMsg struct {
+	CourseId  string `json:"course_id"`
+	UserCount int    `json:"numUsers"`
+}
 
 type CmdSystem struct {
 }
@@ -20,15 +30,15 @@ func (this *CmdSystem) Start(user *User) bool {
 	log.Println("CmdSystem Start")
 
 	user.client_socket.On("login", func(msg string) {
-		this.on_login(user.client_socket, msg)
+		this.on_login(user, "login", msg)
 	})
 
 	user.client_socket.On("logout", func(msg string) {
-		this.on_logout(user.client_socket, msg)
+		this.on_logout(user, "logout", msg)
 	})
 
 	user.client_socket.On("disconnection", func() {
-		this.on_disconnection(user.client_socket)
+		this.on_disconnection(user, "disconnection")
 	})
 
 	return true
@@ -40,29 +50,36 @@ func (this *CmdSystem) Stop(user *User) bool {
 	return true
 }
 
-func (this *CmdSystem) on_login(client_socket socketio.Socket, msg string) {
-	log.Println("CmdSystem on_login", client_socket.Id(), msg)
+func (this *CmdSystem) on_login(user *User, cmd_type string, msg string) {
+	log.Println("CmdSystem on_login", user.client_socket.Id(), msg)
 
-	user := GetContext().user_manager.HasUser(client_socket.Id())
 	if user != nil {
-		user.Login(msg)
+		//user.Login(&login_msg)
+
+		relay_system := GetContext().relay_manager.Relay("system")
+		relay_system.Relay(user, cmd_type, msg)
+	}
+
+}
+
+func (this *CmdSystem) on_logout(user *User, cmd_type string, msg string) {
+	log.Println("CmdSystem on_logout", user.client_socket.Id())
+
+	if user != nil {
+		//user.Logout()
+
+		relay_system := GetContext().relay_manager.Relay("system")
+		relay_system.Relay(user, cmd_type, msg)
 	}
 }
 
-func (this *CmdSystem) on_logout(client_socket socketio.Socket, msg string) {
-	log.Println("CmdSystem on_logout", client_socket.Id(), msg)
+func (this *CmdSystem) on_disconnection(user *User, cmd_type string) {
+	log.Println("CmdSystem on_disconnection", user.client_socket.Id())
 
-	user := GetContext().user_manager.HasUser(client_socket.Id())
 	if user != nil {
-		user.Logout(msg)
-	}
-}
+		relay_system := GetContext().relay_manager.Relay("system")
+		relay_system.Relay(user, cmd_type, "")
 
-func (this *CmdSystem) on_disconnection(client_socket socketio.Socket) {
-	log.Println("CmdSystem on_disconnection", client_socket.Id())
-
-	user := GetContext().user_manager.HasUser(client_socket.Id())
-	if user != nil {
-		user.Disconnect()
+		//user.Disconnect()
 	}
 }

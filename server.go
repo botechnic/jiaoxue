@@ -75,6 +75,7 @@ func on_connected1(client_socket socketio.Socket) {
 		user = NewUser(client_socket)
 		GetContext().user_manager.AddUser(client_socket.Id(), user)
 
-		user.StartLive()
+		relay_system := GetContext().relay_manager.Relay("system")
+		relay_system.Relay(user, "connection", "")
 	}
 }

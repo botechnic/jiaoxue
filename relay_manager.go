@@ -7,6 +7,7 @@ import (
 type JiaoRelay interface {
 	Start(user *User) bool
 	Stop(user *User) bool
+	Relay(user *User, cmd_type string, msg string) bool
 }
 
 type RelayManager struct {
@@ -23,11 +24,11 @@ func NewRelayManager() *RelayManager {
 	return relay_manager
 }
 
-func (this *RelayManager) Register(cmd_key string, cmd JiaoCmd) {
-	log.Println("RelayManager Register", cmd_key)
+func (this *RelayManager) Register(relay_key string, relay JiaoRelay) {
+	log.Println("RelayManager Register", relay_key)
 
 	if this.relay_handler != nil {
-		this.relay_handler[cmd_key] = cmd
+		this.relay_handler[relay_key] = relay
 	}
 }
 
@@ -39,12 +40,17 @@ func (this *RelayManager) UnRegister(cmd_key string) {
 	}
 }
 
+func (this *RelayManager) Relay(relay_type string) JiaoRelay {
+	relay, _ := this.relay_handler[relay_type]
+	return relay
+}
+
 func (this *RelayManager) init() {
-	this.Register("system", NewCmdSystem())
-	this.Register("ppt", NewCmdPPT())
-	this.Register("media", NewCmdMedia())
-	this.Register("chat", NewCmdChat())
-	this.Register("record", NewCmdRecord())
+	this.Register("system", NewRelaySystem())
+	this.Register("ppt", NewRelayPPT())
+	this.Register("media", NewRelayMedia())
+	this.Register("chat", NewRelayChat())
+	this.Register("record", NewRelayRecord())
 }
 
 func (this *RelayManager) uninit() {

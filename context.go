@@ -9,6 +9,7 @@ type Context struct {
 	cmd_manager    *CmdManager
 	relay_manager  *RelayManager
 	record_manager *RecordManager
+	live_server    *LiveServer
 }
 
 var jiao_context *Context
@@ -25,4 +26,8 @@ func GetContext() *Context {
 	}
 
 	return jiao_context
+}
+
+func (this *Context) SetLiveServer(live_server *LiveServer) {
+	this.live_server = live_server
 }
