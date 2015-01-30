@@ -5,8 +5,6 @@ import (
 )
 
 func main() {
-	live_server := jiaoxue.NewLiveServer()
-	jiaoxue.GetContext().SetLiveServer(live_server)
-
+	live_server := jiaoxue.GetLiveServer()
 	live_server.Start()
 }
